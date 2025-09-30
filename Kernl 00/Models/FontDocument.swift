@@ -59,20 +59,7 @@ class Glyph: ObservableObject, Identifiable {
     
     init(character: Character) {
         self.character = character
-        // Create a simple placeholder path for demonstration
-        createPlaceholderPath()
-    }
-    
-    private func createPlaceholderPath() {
-        // Create a simple rectangular path as placeholder
-        let path = GlyphPath()
-        path.addRectangle(x: 50, y: 50, width: 500, height: 700)
-        paths.append(path)
-        
-        // Add a simple curve for demonstration
-        let curvePath = GlyphPath()
-        curvePath.addCircle(centerX: 300, centerY: 400, radius: 150)
-        paths.append(curvePath)
+        // Start with empty glyph - no placeholder paths
     }
     
     var totalWidth: Double {
