@@ -99,6 +99,11 @@ struct AdvancedVectorEditor: View {
                         )
                     }
                     
+                    // Enhanced Pen Tool
+                    if selectedTool == .pen {
+                        EnhancedPenTool(glyph: glyph)
+                    }
+                    
                     // Selection Rectangle
                     if isDragging && selectedTool == .select {
                         SelectionRectangle(
@@ -350,6 +355,7 @@ enum VectorTool: String, CaseIterable {
     case rectangle = "Rectangle"
     case circle = "Circle"
     case path = "Path"
+    case importExport = "Import/Export"
 }
 
 #Preview {

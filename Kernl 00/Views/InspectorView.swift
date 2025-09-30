@@ -38,6 +38,11 @@ struct InspectorView: View {
                         
                         // Path Tools
                         PathToolsView(glyph: selectedGlyph)
+                        
+                        Divider()
+                        
+                        // Vector Import/Export
+                        VectorImportExportView(glyph: selectedGlyph)
                     } else {
                         Text("No glyph selected")
                             .foregroundColor(.secondary)

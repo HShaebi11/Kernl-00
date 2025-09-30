@@ -154,6 +154,8 @@ struct AdvancedToolButton: View {
             return "circle"
         case .path:
             return "path"
+        case .importExport:
+            return "square.and.arrow.up.on.square"
         }
     }
 }
