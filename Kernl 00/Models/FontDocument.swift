@@ -68,6 +68,11 @@ class Glyph: ObservableObject, Identifiable {
         let path = GlyphPath()
         path.addRectangle(x: 50, y: 50, width: 500, height: 700)
         paths.append(path)
+        
+        // Add a simple curve for demonstration
+        let curvePath = GlyphPath()
+        curvePath.addCircle(centerX: 300, centerY: 400, radius: 150)
+        paths.append(curvePath)
     }
     
     var totalWidth: Double {

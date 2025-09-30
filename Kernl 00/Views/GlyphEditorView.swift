@@ -128,6 +128,7 @@ struct GlyphCanvasView: View {
     @ObservedObject var glyph: Glyph
     let zoom: Double
     let showMetrics: Bool
+    @State private var isEditing = false
     
     var body: some View {
         ZStack {
@@ -136,13 +137,25 @@ struct GlyphCanvasView: View {
                 MetricsView(glyph: glyph)
             }
             
-            // Glyph paths
-            ForEach(glyph.paths) { path in
-                GlyphPathView(path: path)
+            if isEditing {
+                // Interactive path editor
+                PathEditorView(glyph: glyph)
+            } else {
+                // Static glyph paths
+                ForEach(glyph.paths) { path in
+                    GlyphPathView(path: path)
+                }
             }
         }
         .scaleEffect(zoom)
         .frame(width: 800, height: 600)
+        .overlay(alignment: .topTrailing) {
+            Button(isEditing ? "Preview" : "Edit") {
+                isEditing.toggle()
+            }
+            .buttonStyle(.bordered)
+            .padding()
+        }
     }
 }
 

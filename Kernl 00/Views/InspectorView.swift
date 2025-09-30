@@ -33,6 +33,11 @@ struct InspectorView: View {
                     // Glyph Properties
                     if let selectedGlyph = fontDocument.selectedGlyph {
                         GlyphPropertiesSection(glyph: selectedGlyph)
+                        
+                        Divider()
+                        
+                        // Path Tools
+                        PathToolsView(glyph: selectedGlyph)
                     } else {
                         Text("No glyph selected")
                             .foregroundColor(.secondary)
