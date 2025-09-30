@@ -174,14 +174,14 @@ struct GlyphCanvasView: View {
                     )
                 }
                 
-                // Vector editing mode
-                if drawingMode == .vector {
-                    if drawingTool == .pen {
-                        EnhancedPenTool(glyph: glyph)
-                    } else {
-                        AdvancedVectorEditor(glyph: glyph)
-                    }
+            // Vector editing mode
+            if drawingMode == .vector {
+                if drawingTool == .pen {
+                    IllustratorPenTool(glyph: glyph)
+                } else {
+                    AdvancedVectorEditor(glyph: glyph)
                 }
+            }
                 
                 // Preview mode - show all paths
                 if drawingMode == .preview {
