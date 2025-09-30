@@ -129,23 +129,83 @@ class PathPoint: ObservableObject, Identifiable {
     @Published var x: Double
     @Published var y: Double
     @Published var type: PointType
+    @Published var handleConstraint: HandleConstraint = .symmetric
     @Published var controlInX: Double = 0
     @Published var controlInY: Double = 0
     @Published var controlOutX: Double = 0
     @Published var controlOutY: Double = 0
-    
+    @Published var isSelected: Bool = false
+
     init(x: Double, y: Double, type: PointType) {
         self.x = x
         self.y = y
         self.type = type
     }
+    
+    // Apply handle constraints when moving handles
+    func updateInHandle(dx: Double, dy: Double) {
+        controlInX = dx
+        controlInY = dy
+        
+        switch handleConstraint {
+        case .symmetric:
+            // Mirror to out handle with same length
+            controlOutX = -dx
+            controlOutY = -dy
+        case .asymmetric:
+            // Mirror direction but keep out handle length
+            let outLength = sqrt(controlOutX * controlOutX + controlOutY * controlOutY)
+            let inLength = sqrt(dx * dx + dy * dy)
+            if inLength > 0 {
+                let scale = outLength / inLength
+                controlOutX = -dx * scale
+                controlOutY = -dy * scale
+            }
+        case .broken:
+            // Independent - do nothing
+            break
+        }
+    }
+    
+    func updateOutHandle(dx: Double, dy: Double) {
+        controlOutX = dx
+        controlOutY = dy
+        
+        switch handleConstraint {
+        case .symmetric:
+            // Mirror to in handle with same length
+            controlInX = -dx
+            controlInY = -dy
+        case .asymmetric:
+            // Mirror direction but keep in handle length
+            let inLength = sqrt(controlInX * controlInX + controlInY * controlInY)
+            let outLength = sqrt(dx * dx + dy * dy)
+            if outLength > 0 {
+                let scale = inLength / outLength
+                controlInX = -dx * scale
+                controlInY = -dy * scale
+            }
+        case .broken:
+            // Independent - do nothing
+            break
+        }
+    }
 }
 
-// MARK: - Point Type
-enum PointType {
-    case corner    // Sharp corner
-    case curve     // Smooth curve
-    case control   // Control point for bezier curves
+enum PointType: String, CaseIterable, Identifiable {
+    case corner      // Sharp corner, no curve
+    case curve       // Smooth curve
+    case control     // Control point (not on path)
+    case auto        // Automatically smooth
+    var id: String { self.rawValue }
+}
+
+// Handle constraint modes
+enum HandleConstraint: String, CaseIterable, Identifiable {
+    case symmetric   // Both handles same length, opposite direction
+    case asymmetric  // Opposite direction, different lengths
+    case broken      // Independent handles
+    var id: String { self.rawValue }
 }
 
 // MARK: - Font Metrics

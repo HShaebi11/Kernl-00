@@ -43,6 +43,11 @@ struct InspectorView: View {
                         
                         // Vector Import/Export
                         VectorImportExportView(glyph: selectedGlyph)
+                        
+                        Divider()
+                        
+                        // Transform Tools
+                        TransformToolsView(glyph: selectedGlyph)
                     } else {
                         Text("No glyph selected")
                             .foregroundColor(.secondary)

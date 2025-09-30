@@ -191,6 +191,8 @@ struct PointView: View {
                 return .green
             case .control:
                 return .orange
+            case .auto:
+                return .purple
             }
         }
     }

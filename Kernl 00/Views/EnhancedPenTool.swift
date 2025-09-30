@@ -36,7 +36,8 @@ struct EnhancedPenTool: View {
                     path.move(to: lastPoint)
                     path.addLine(to: previewPoint)
                 }
-                .stroke(Color.gray.opacity(0.5), style: StrokeStyle(lineWidth: 1, dash: [5, 5]))
+                .stroke(style: StrokeStyle(lineWidth: 1, dash: [5, 5]))
+                .foregroundStyle(Color.gray.opacity(0.5))
             }
             
             // Curve preview
@@ -45,8 +46,8 @@ struct EnhancedPenTool: View {
                     path.move(to: startPoint)
                     path.addCurve(to: endPoint, control1: controlPoint, control2: controlPoint)
                 }
-                .stroke(Color.blue.opacity(0.7), lineWidth: 2)
-                .stroke(<#_#>, style: StrokeStyle(lineWidth: 2, dash: [3, 3]))
+                .stroke(style: StrokeStyle(lineWidth: 2, dash: [3, 3]))
+                .foregroundStyle(Color.blue.opacity(0.7))
             }
             
             // Control handle preview
@@ -63,9 +64,6 @@ struct EnhancedPenTool: View {
                     .position(controlHandle)
             }
         }
-        .onTapGesture { location in
-            handleTap(at: location)
-        }
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { value in
@@ -78,6 +76,20 @@ struct EnhancedPenTool: View {
     }
     
     // MARK: - Event Handlers
+    
+    private func handleDragEnd(_ value: DragGesture.Value) {
+        let movement = hypot(value.translation.width, value.translation.height)
+        if isCreatingCurve {
+            // Complete the curve
+            completeCurve(at: value.location)
+        } else if movement <= 10 {
+            // Treat as a tap: add a corner point or complete the curve
+            handleTap(at: value.location)
+        } else {
+            // Start creating a curve from a drag
+            startCurve(at: value.location)
+        }
+    }
     
     private func handleTap(at location: CGPoint) {
         if isCreatingCurve {
@@ -95,16 +107,6 @@ struct EnhancedPenTool: View {
         if isCreatingCurve {
             // Update curve control point
             curveControlPoint = value.location
-        } else if sqrt(value.translation.width * value.translation.width + value.translation.height * value.translation.height) > 10 {
-            // Start creating a curve
-            startCurve(at: value.location)
-        }
-    }
-    
-    private func handleDragEnd(_ value: DragGesture.Value) {
-        if isCreatingCurve {
-            // Complete the curve
-            completeCurve(at: value.location)
         } else if sqrt(value.translation.width * value.translation.width + value.translation.height * value.translation.height) > 10 {
             // Start creating a curve
             startCurve(at: value.location)

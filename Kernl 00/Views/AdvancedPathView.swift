@@ -170,6 +170,8 @@ struct AdvancedPointView: View {
                 return .green
             case .control:
                 return .orange
+            case .auto:
+                return .purple
             }
         }
     }
