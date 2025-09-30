@@ -47,8 +47,13 @@ struct InspectorView: View {
                     
                     Divider()
                     
-                    // Metrics
-                    MetricsSection(fontDocument: fontDocument)
+                    // Advanced Metrics
+                    AdvancedMetricsView(fontMetrics: fontDocument.fontMetrics)
+                    
+                    Divider()
+                    
+                    // Kerning
+                    KerningView(fontDocument: fontDocument)
                 }
                 .padding()
             }

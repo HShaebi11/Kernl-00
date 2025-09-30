@@ -149,21 +149,21 @@ enum PointType {
 }
 
 // MARK: - Font Metrics
-struct FontMetrics {
-    var unitsPerEm: Double = 1000
-    var ascender: Double = 800
-    var descender: Double = -200
-    var capHeight: Double = 700
-    var xHeight: Double = 500
-    var baseline: Double = 0
+class FontMetrics: ObservableObject {
+    @Published var unitsPerEm: Double = 1000
+    @Published var ascender: Double = 800
+    @Published var descender: Double = -200
+    @Published var capHeight: Double = 700
+    @Published var xHeight: Double = 500
+    @Published var baseline: Double = 0
 }
 
 // MARK: - Kerning Pair
-struct KerningPair: Identifiable {
+class KerningPair: ObservableObject, Identifiable {
     let id = UUID()
-    let leftGlyph: Character
-    let rightGlyph: Character
-    var kerningValue: Double
+    @Published var leftGlyph: Character
+    @Published var rightGlyph: Character
+    @Published var kerningValue: Double
     
     init(left: Character, right: Character, value: Double) {
         self.leftGlyph = left

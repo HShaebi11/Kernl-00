@@ -75,6 +75,7 @@ struct GlyphEditorView: View {
                         if let selectedGlyph = fontDocument.selectedGlyph {
                             GlyphCanvasView(
                                 glyph: selectedGlyph,
+                                fontDocument: fontDocument,
                                 zoom: zoom,
                                 showMetrics: showMetrics
                             )
@@ -126,6 +127,7 @@ struct GridView: View {
 
 struct GlyphCanvasView: View {
     @ObservedObject var glyph: Glyph
+    @ObservedObject var fontDocument: FontDocument
     let zoom: Double
     let showMetrics: Bool
     @State private var isEditing = false
@@ -134,7 +136,7 @@ struct GlyphCanvasView: View {
         ZStack {
             // Metrics lines
             if showMetrics {
-                MetricsView(glyph: glyph)
+                GlyphMetricsView(glyph: glyph, fontMetrics: fontDocument.fontMetrics)
             }
             
             if isEditing {
@@ -159,24 +161,12 @@ struct GlyphCanvasView: View {
     }
 }
 
-struct MetricsView: View {
+struct GlyphMetricsView: View {
     @ObservedObject var glyph: Glyph
+    @ObservedObject var fontMetrics: FontMetrics
     
     var body: some View {
-        VStack(spacing: 0) {
-            // Baseline
-            Rectangle()
-                .fill(Color.blue.opacity(0.5))
-                .frame(height: 1)
-                .frame(maxWidth: .infinity)
-            
-            Spacer()
-            
-            // Glyph bounds
-            Rectangle()
-                .stroke(Color.red.opacity(0.5), lineWidth: 1)
-                .frame(width: glyph.width, height: 800) // Standard font height
-        }
+        MetricsView(glyph: glyph, fontMetrics: fontMetrics)
     }
 }
 
