@@ -140,8 +140,8 @@ struct GlyphCanvasView: View {
             }
             
             if isEditing {
-                // Interactive path editor
-                PathEditorView(glyph: glyph)
+                // Advanced vector editor
+                AdvancedVectorEditor(glyph: glyph)
             } else {
                 // Static glyph paths
                 ForEach(glyph.paths) { path in
