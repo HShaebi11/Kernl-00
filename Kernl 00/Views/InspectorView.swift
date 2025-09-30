@@ -48,6 +48,16 @@ struct InspectorView: View {
                         
                         // Transform Tools
                         TransformToolsView(glyph: selectedGlyph)
+                        
+                        Divider()
+                        
+                        // Component Library
+                        ComponentLibraryView(glyph: selectedGlyph, fontDocument: fontDocument)
+                        
+                        Divider()
+                        
+                        // Path Smoothing
+                        SmoothingToolsView(glyph: selectedGlyph)
                     } else {
                         Text("No glyph selected")
                             .foregroundColor(.secondary)
@@ -64,6 +74,11 @@ struct InspectorView: View {
                     
                     // Kerning
                     KerningView(fontDocument: fontDocument)
+                    
+                    Divider()
+                    
+                    // OpenType Features
+                    OpenTypeEditorView()
                 }
                 .padding()
             }
